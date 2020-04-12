@@ -10,13 +10,13 @@ app.use(express.static('./public/styles'))
 
 app.set('view engine', 'ejs');
 
-app.get('/', (request, response) => {
-    //data = data from api I think or sql
-    response.render('index.ejs', data );
-});
 
 app.get('/hello', (request, response) => {
     response.render('pages/index' );
+});
+
+app.get('/searches/new', (request, response) => {
+    response.render('pages/searches/new' );
 });
 
 
