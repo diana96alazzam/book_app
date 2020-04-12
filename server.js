@@ -10,6 +10,9 @@ app.use(express.static('./public/styles'))
 
 app.set('view engine', 'ejs');
 
+app.get('/', (request, response) => {
+    response.render('pages/index');
+});
 
 app.get('/hello', (request, response) => {
     response.render('pages/index');
