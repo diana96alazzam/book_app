@@ -4,25 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New</title>
+    <link href= "/public/base.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <header>
+        <h1>Hi this is the search new page</h1>
 
     </header>
     <main>
-        <form action="">
-            <input type="text">
-            <label for="">Title</label>
-            <input type="radio">            
-            <label for="">Author</label>
-            <input type="radio">
-            <button type="submit">Search the Google Books API</button>
+        <form action="/searches" method="post">
+            <input type="text" name="searched">
+            <label><input type="radio" name="searchFilter" value="title">Title</label>
+                        
+            <label><input type="radio" name="searchFilter" value="author">Author</label>
+            <button type="submit">Search</button>
         </form>
+
 
     </main>
     <footer>
 
     </footer>
+
+
     
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>    
 </body>
 </html>
