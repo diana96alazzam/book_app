@@ -6,7 +6,9 @@ const superagent = require('superagent');
 const PORT = process.env.PORT || 4000;
 
 const app = express();
-app.use(express.static('./public/styles'))
+
+app.use('./public/styles', express.static('public'));
+
 
 app.set('view engine', 'ejs');
 
