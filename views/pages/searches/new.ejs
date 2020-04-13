@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New</title>
+    <%- include('../../layout/head')%>
     <link href="../../../public/styles/reset.css" rel="stylesheet" type="text/css"/></head>
     <link href="../../../public/styles/base.css" rel="stylesheet" type="text/css"/></head>
 <body>
-    <header>
-        <h1>Best Books!</h1>
-    </header>
+
+    <%- include('../../layout/header')%>
+
     <main>
         <legend>Search by Title or Author</legend>
         <form action="/searches" method="post">
@@ -22,15 +20,9 @@
             <br>
             <button type="submit">Search the Google Books API</button>
         </form>
-
-
     </main>
-    <footer>
 
-    </footer>
-
-
+    <%- include('../../layout/footer')%>
     
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>    
 </body>
 </html>
