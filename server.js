@@ -7,8 +7,8 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 
-app.use('./public/styles', express.static('public'));
-
+// app.use(express.static("public"));
+app.use('/public', express.static('public'));
 
 app.set('view engine', 'ejs');
 
