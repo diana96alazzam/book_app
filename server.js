@@ -75,12 +75,12 @@ function getBookDetails(request, response) {
 
 function addBooks(request, response) {
     //replace search title with isbn
-    const sqlSearch = 'SELECT title, author, image_url, description, isbn FROM books WHERE title=$1 AND author=$2 AND image_url=$3 AND description=$4 AND isbn=$5;'
+    const sqlSearch = 'SELECT (title, author, image_url, description, isbn) FROM books WHERE $1=title AND $2=author AND $3=image_url AND $4=description AND $5=isbn;'
     const searchVal = [request.body.bookTitle, request.body.bookAuthor, request.body.bookImage, request.body.bookDescription, request.body.bookISBN];
-    return client.query(sqlSearch, searchVal).then((searchedResult) => {
-        if (searchedResult.rows.length > 0) {
-            response.render('pages/books/show', { book: values });
-        } else {
+    client.query(sqlSearch, searchVal).then((searchedResult)=> {
+        if(searchedResult.rows.length > 0){
+            response.render('pages/books/show', {book : searchVal});
+        }else{
             const SQL = 'INSERT INTO books (title, author, image_url, description, isbn) VALUES ($1,$2,$3, $4, $5);'
             const values = [request.body.bookTitle, request.body.bookAuthor, request.body.bookImage, request.body.bookDescription, request.body.bookISBN];
             client.query(SQL, values).then((addedBook) => {
