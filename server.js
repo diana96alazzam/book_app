@@ -1,4 +1,5 @@
 'use strict';
+let bookshelves = [];
 
 require('dotenv').config();
 const express = require('express');
@@ -75,18 +76,17 @@ function getBookDetails(request, response) {
 
 function addBooks(request, response) {
     //replace search title with isbn
-
     const sqlSearch = 'SELECT (title, author, image_url, description, isbn) FROM books WHERE $1=title AND $2=author AND $3=image_url AND $4=description AND $5=isbn;'
     const searchVal = [request.body.bookTitle, request.body.bookAuthor, request.body.bookImage, request.body.bookDescription, request.body.bookISBN];
-    client.query(sqlSearch, searchVal).then((searchedResult)=> {
-        if(searchedResult.rows.length > 0){
-            response.render('pages/books/show', {book : searchVal});
-        }else{
+    client.query(sqlSearch, searchVal).then((searchedResult) => {
+        if (searchedResult.rows.length > 0) {
+            response.render('pages/books/show', { book: searchVal });
+        } else {
             const SQL = 'INSERT INTO books (title, author, image_url, description, isbn) VALUES ($1,$2,$3, $4, $5);'
             const values = [request.body.bookTitle, request.body.bookAuthor, request.body.bookImage, request.body.bookDescription, request.body.bookISBN];
             client.query(SQL, values).then((addedBook) => {
                 console.log('hi', request.body.id)
-                response.render('pages/books/show', {book: values});
+                response.render('pages/books/show', { book: values });
             }).catch((err) => {
                 errorHandler(err, request, response);
             });
@@ -96,27 +96,47 @@ function addBooks(request, response) {
 }
 
 
-function updateBook (request, response){
-    console.log('hey', request.body);
-    const updateSQL = 'UPDATE books SET title=$1, author=$2, image_url=$3, description=$4, isbn=$5 WHERE id=$6 ';
-    const updatedValues = [request.body.bookTitle, request.body.bookAuthor, request.body.bookImage, request.body.bookDescription, request.body.bookISBN, request.params.id];
-    client.query(updateSQL, updatedValues).then((updateResult)=>{
-        response.redirect(`/books/${request.params.id}`)
-    }).catch((err)=> errorHandler(err, request, response));
+function updateBook(request, response) {
+    if (request.body.addBookShelf) {
+        if (!(bookshelves.includes(request.body.addBookShelf))) {
+            bookshelves.push(request.body.addBookShelf);
+        }
+        console.log(bookshelves);
+        // if(!(bookshelves.includes(request.body.addBookShelf))){
+        //     bookshelves.push(request.body.addBookShelf);
+        //     const shelfesSQL = 'INSERT INTO bookshelvesTable bookshelfName VALUES $1;'
+        //     const shelfVal = [request.body.addBookShelf]
+        //     client.query(shelfesSQL, shelfVal).then((updatedShelf)=> {
+        //         response.render('pages/books/detail', { bookshelfProp: bookshelves });
+        //     })
+        // }
+        const updateSQL = 'UPDATE books SET title=$1, author=$2, image_url=$3, description=$4, isbn=$5, bookshelf=$6 WHERE id=$7';
+        const updatedValues = [request.body.bookTitle, request.body.bookAuthor, request.body.bookImage, request.body.bookDescription, request.body.bookISBN, request.body.addBookShelf, request.params.id];
+        client.query(updateSQL, updatedValues).then((updateResult) => {
+            response.redirect(`/books/${request.params.id}`)
+        }).catch((err) => errorHandler(err, request, response));
+    } else {
+        const updateSQL = 'UPDATE books SET title=$1, author=$2, image_url=$3, description=$4, isbn=$5 WHERE id=$6 ';
+        const updatedValues = [request.body.bookTitle, request.body.bookAuthor, request.body.bookImage, request.body.bookDescription, request.body.bookISBN, request.params.id];
+        client.query(updateSQL, updatedValues).then((updateResult) => {
+            response.redirect(`/books/${request.params.id}`)
+        }).catch((err) => errorHandler(err, request, response));
+    }
+
 }
 
-function deleteBook (request, response) {
+function deleteBook(request, response) {
     const deleteSQL = 'DELETE FROM books WHERE id=$1';
     const deleteVal = [request.params.id];
-    client.query(deleteSQL, deleteVal).then((deleteResults)=> {
+    client.query(deleteSQL, deleteVal).then((deleteResults) => {
         response.redirect('/');
-    }).catch((err)=> errorHandler(err, request, response));
+    }).catch((err) => errorHandler(err, request, response));
 }
 
 
 
 
-function notFound (request, response){
+function notFound(request, response) {
     return response.status(404).send('Page not found');
 }
 
