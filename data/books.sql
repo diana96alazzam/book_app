@@ -8,4 +8,11 @@ CREATE TABLE books(
     image_url VARCHAR(65535),
     description TEXT,
     bookshelf VARCHAR(255)
+);
+
+CREATE TABLE bookshelvesTable(
+    id SERIAL PRIMARY KEY,
+    bookshelfName VARCHAR(255)
 )
+
+
